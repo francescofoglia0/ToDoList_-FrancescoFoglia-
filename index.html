@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grocery Item</title>
+<style>
+
+body{display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #f5f5f5;}
+
+.contenitore{display: flex;
+            align-items: center;}
+
+.casella-testo{padding: 8.6px 20px;
+                border-radius: 5px 0 0 5px;
+                color:#333333;
+                border:1px solid #80cfa9;
+                font-size: 16px;
+                margin-right: 0;
+                width: 500px;}
+
+.button{font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        font-size: 16px;
+        padding: 7px 12px;
+        color: #80cfa9;
+        background-color: #f5f5f5;
+        border: 1px solid #80cfa9;
+        cursor: pointer;
+        margin-left: -1px;}
+
+.button:hover{background-color: #80cfa9;
+                color:black;}
+
+.casella-testo:focus {
+        box-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
+        outline: none;
+        }
+
+.output{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 20px;
+    text-align: right;
+}
+
+.newbutton{
+    font-size: 20px;
+    border: none;
+    background-color: #f5f5f5;
+    cursor: pointer;
+}
+
+.errori{
+    width: 630px;
+    height: 50px;
+    margin: auto;
+    border-radius: 5px;
+    background-color: rgb(255, 187, 187);
+    color: rgb(85, 2, 2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+h3 {text-align: center;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 30px;
+    color: #333333;}
+
+</style>
+</head>
+<body>
+
+<div id="errore">
+
+</div>
+<br>
+
+<h3> To Do List</h3>
+
+<div id="inputSection" class="contenitore">
+    <input id="elemento" type="text" class="casella-testo" style="border-radius: 5px 0 0 5px;" placeholder="Name...">
+<button id="ciao"  class="button"  style="border-radius: 0 5px 5px 0;" onclick="aggiungiElemento()">Add Item</button>
+</div>
+
+<br>
+<br>
+
+<div class="output" id="outputSection">
+
+</div>
+
+<br>
+<br>
+<br>
+<br>
+
+<button class="button" onclick="eliminaTutto()" style="border-radius: 5px 5px 5px 5px;">Clear Items</button>
+
+<script>
+
+    var inputBox = document.getElementById("elemento");
+    var submitButton = document.getElementById("ciao");
+  inputBox.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+      submitButton.click();
+    }
+  });
+
+    var b = 0;
+    function aggiungiElemento(){
+        var elementoInput = document.getElementById("elemento").value;
+        if (elementoInput.trim() !== ""){
+            var newItem = document.createElement("div");
+            var textNode = document.createTextNode(elementoInput);
+            newItem.appendChild(textNode);
+            
+            var deleteButton = document.createElement("button");
+            deleteButton.classList.add("newbutton");
+            deleteButton.innerHTML = "❌";
+            deleteButton.onclick = function() {
+                newItem.remove();
+            };
+
+            var editButton = document.createElement("button");
+            editButton.classList.add("newbutton");
+            editButton.innerHTML = "✍️";
+            editButton.onclick = function() {
+            document.getElementById("elemento").value = elementoInput;
+            newItem.remove();
+            };
+            
+            var markDeletedButton = document.createElement("button");
+            markDeletedButton.style.marginLeft = "480px";
+            markDeletedButton.classList.add("newbutton");
+            markDeletedButton.innerHTML = "✅";
+            let a = 0;
+            markDeletedButton.onclick = function() {
+                if (a === 0){
+                    newItem.style.textDecoration = "line-through";
+                    newItem.style.color = "#999"
+                    a = 1;
+                }
+                else{
+                    newItem.style.textDecoration = "none";
+                    newItem.style.color = "black"
+                    a = 0;
+                }
+            
+            };
+            
+            newItem.appendChild(markDeletedButton);
+            newItem.appendChild(editButton);
+            newItem.appendChild(deleteButton);
+            document.getElementById("outputSection").appendChild(newItem);
+            document.getElementById("elemento").value = "";
+            document.getElementById("errore").innerHTML = "";
+            b = 0;
+
+        }
+        else{
+            if (b===0){
+                let errore = document.createElement("div");
+                errore.innerHTML = "Please Enter Valid Value"
+                errore.classList.add("errori");
+                document.getElementById("errore").appendChild(errore);
+                b = 1;}
+        }
+        
+    }
+    
+    function eliminaTutto(){
+        document.getElementById("outputSection").innerHTML = "";
+    }
+</script>
+
+</body>
+</html>
